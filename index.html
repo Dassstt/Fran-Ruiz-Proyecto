@@ -273,6 +273,30 @@
     100%{transform:scaleY(0);transform-origin:bottom;}
   }
 
+  /* ---------- scroll reveal ---------- */
+  .reveal{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal.is-visible{opacity:1;transform:translateY(0);}
+
+  .reveal-group > *{
+    opacity:0;
+    transform:translateY(28px);
+    transition:opacity .6s ease, transform .6s cubic-bezier(.2,.7,.2,1);
+  }
+  .reveal-group.is-visible > *{opacity:1;transform:translateY(0);}
+  .reveal-group.is-visible > *:nth-child(2){transition-delay:.1s;}
+  .reveal-group.is-visible > *:nth-child(3){transition-delay:.2s;}
+  .reveal-group.is-visible > *:nth-child(4){transition-delay:.3s;}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal, .reveal-group > *{
+      opacity:1 !important; transform:none !important; transition:none !important;
+    }
+  }
+
   /* ---------- section shell ---------- */
   section{padding:120px 0;position:relative;}
   .section-head{
@@ -551,7 +575,7 @@
     border-bottom:1px solid rgba(240,180,0,.1);
   }
   .foot-brand{display:flex;align-items:center;gap:12px;}
-  .foot-brand img{height:34px;}
+  .foot-brand img{height:34px;width:auto;}
   .foot-brand span{font-family:'Marcellus SC',serif;font-size:17px;letter-spacing:.1em;}
   .foot-links{display:flex;gap:30px;flex-wrap:wrap;}
   .foot-links a{font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#a39d8d;}
@@ -632,7 +656,7 @@
 </section>
 
 <section class="about" id="nosotros">
-  <div class="wrap about-grid">
+  <div class="wrap about-grid reveal-group">
     <div>
       <span class="eyebrow">El taller</span>
       <h2>Trabajamos el metal<br>como un oficio, no<br>como un trámite</h2>
@@ -654,7 +678,7 @@
 
 <section id="servicios">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div>
         <span class="eyebrow">Lo que fabricamos</span>
         <h2>Tres líneas de trabajo,<br>un mismo oficio</h2>
@@ -662,7 +686,7 @@
       <p>Cada servicio se proyecta y fabrica según el espacio real: medimos, diseñamos y montamos sin soluciones de catálogo genéricas.</p>
     </div>
 
-    <div class="services-grid">
+    <div class="services-grid reveal-group">
       <div class="service-card blueprint">
         <span class="bl"></span><span class="br"></span>
         <div class="corner-rivets"><span class="rivet"></span><span class="rivet"></span><span class="rivet"></span><span class="rivet"></span></div>
@@ -707,14 +731,14 @@
 
 <section class="gallery" id="proyectos">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head reveal">
       <div>
         <span class="eyebrow">Trabajos realizados</span>
         <h2>Del taller a la obra</h2>
       </div>
       <p>Una muestra real de piezas fabricadas e instaladas por Ruiz en Álora y alrededores.</p>
     </div>
-    <div class="gallery-grid">
+    <div class="gallery-grid reveal-group">
       <div class="g-item">
         <img src="images/img1.jpg" alt="Reja y ventana con forja decorativa" width="876" height="647" loading="lazy" decoding="async">
         <div class="g-cap"><div class="gt">Línea 01</div><div class="gl">Reja decorativa para ventana</div></div>
@@ -737,14 +761,14 @@
 
 <section class="process">
   <div class="wrap">
-    <div class="section-head" style="margin-bottom:0;">
+    <div class="section-head reveal" style="margin-bottom:0;">
       <div>
         <span class="eyebrow">Cómo trabajamos</span>
         <h2>De la medición<br>al montaje</h2>
       </div>
     </div>
   </div>
-  <div class="process-row" style="margin-top:50px;">
+  <div class="process-row reveal-group" style="margin-top:50px;">
     <div class="pstep">
       <div class="pn">Primero</div>
       <h3>Visita y medición</h3>
@@ -769,7 +793,7 @@
 </section>
 
 <section class="trust">
-  <div class="wrap trust-grid">
+  <div class="wrap trust-grid reveal-group">
     <div>
       <div class="quote-mark">"</div>
       <blockquote>Cada pieza que sale de nuestro taller lleva el mismo cuidado: la fabricamos como si fuera para nuestra propia casa.</blockquote>
@@ -793,11 +817,11 @@
 </section>
 
 <section class="contact" id="contacto">
-  <div class="wrap">
+  <div class="wrap reveal">
     <span class="eyebrow">Contacto</span>
     <h2>Cuéntanos qué necesitas<br>forjar</h2>
   </div>
-  <div class="wrap contact-grid" style="margin-top:50px;">
+  <div class="wrap contact-grid reveal-group" style="margin-top:50px;">
     <div>
       <p class="lead">Escríbenos, llámanos o pásate por el taller. Te respondemos con un presupuesto ajustado a tu proyecto, sin compromiso.</p>
       <ul class="c-list">
@@ -967,6 +991,24 @@
       submitBtn.textContent = 'Enviar solicitud';
     }
   });
+
+  (function(){
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const els = document.querySelectorAll('.reveal, .reveal-group');
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      els.forEach(el => el.classList.add('is-visible'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+    els.forEach(el => io.observe(el));
+  })();
 </script>
 
 </body>
