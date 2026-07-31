@@ -50,6 +50,44 @@
   "sameAs": ["https://instagram.com/c.e.metalicasruiz"]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "¿El presupuesto tiene algún coste?",
+      "acceptedAnswer": { "@type": "Answer", "text": "No. Valoramos tu proyecto y te damos un presupuesto cerrado sin compromiso, antes de empezar a fabricar nada." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Trabajáis solo en Álora o también en el resto de Málaga?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Nuestro taller está en Álora, pero trabajamos en toda la provincia de Málaga: nos desplazamos para medir y también para instalar." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Hacéis piezas a medida o solo modelos de catálogo?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Todo lo que fabricamos es a medida. No vendemos catálogo: diseñamos y calculamos cada pieza para el espacio y el uso concreto que nos cuentes." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cuánto tarda un proyecto en estar listo?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Depende de la complejidad de la pieza y de la carga de trabajo del taller en ese momento. Te damos un plazo concreto junto con el presupuesto, antes de que decidas." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Qué materiales y acabados usáis?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Trabajamos principalmente hierro y acero, con acabados en galvanizado, pintado o combinaciones con madera, según lo que necesite cada proyecto." }
+    },
+    {
+      "@type": "Question",
+      "name": "¿Cómo os puedo contactar?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Por teléfono o WhatsApp al 616 61 84 64, por email a cmfranruiz@gmail.com, o rellenando el formulario de contacto de la web." }
+    }
+  ]
+}
+</script>
 <style>
   :root{
     --carbon: #1c1c1c;
@@ -439,6 +477,33 @@
   }
   .pstep p{font-size:13.5px;color:#a39d8d;}
 
+  /* ---------- FAQ ---------- */
+  .faq{background:var(--charcoal);}
+  .faq-list{max-width:820px;}
+  .faq-item{
+    border-bottom:1px solid rgba(240,180,0,.16);
+  }
+  .faq-item summary{
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+    padding:22px 4px;
+    cursor:pointer;
+    list-style:none;
+    font-family:'Marcellus SC',serif;
+    font-size:18px;color:var(--bone);
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{
+    content:"+";
+    font-family:'Cormorant Garamond',serif;
+    font-size:26px;color:var(--gold);flex:none;
+    transition:transform .25s ease;
+  }
+  .faq-item[open] summary::after{transform:rotate(45deg);}
+  .faq-item p{
+    padding:0 4px 24px;max-width:65ch;
+    color:#b9b3a2;font-size:15px;
+  }
+
   /* ---------- testimonial / trust ---------- */
   .trust{padding:100px 0 110px;}
   .trust-grid{
@@ -599,9 +664,40 @@
   .wa-float:hover{transform:scale(1.08);}
   .wa-float svg{width:28px;height:28px;fill:var(--carbon);}
 
+  /* header whatsapp icon */
+  .nav-wa{
+    display:flex;align-items:center;justify-content:center;
+    width:38px;height:38px;border:1px solid var(--gold);
+    color:var(--gold);
+  }
+  .nav-wa:hover{background:var(--gold);}
+  .nav-wa:hover svg{fill:var(--carbon);}
+  .nav-wa svg{width:19px;height:19px;fill:var(--gold);}
+  .nav-actions{display:flex;align-items:center;gap:12px;}
+
+  /* sticky mobile CTA bar */
+  .mobile-cta{
+    display:none;
+    position:fixed;left:0;right:0;bottom:0;z-index:95;
+    background:var(--charcoal);
+    border-top:1px solid rgba(240,180,0,.25);
+    box-shadow:0 -6px 20px rgba(0,0,0,.35);
+  }
+  .mobile-cta .row{display:grid;grid-template-columns:1fr 1fr;}
+  .mobile-cta a{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    padding:16px 10px;
+    font-family:'Oswald',sans-serif;font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+  }
+  .mobile-cta .call{color:var(--bone);border-right:1px solid rgba(240,180,0,.18);}
+  .mobile-cta .wa{color:var(--carbon);background:var(--gold);font-weight:600;}
+  .mobile-cta svg{width:16px;height:16px;}
+  .mobile-cta .call svg{fill:var(--gold);}
+  .mobile-cta .wa svg{fill:var(--carbon);}
+
   /* mobile nav */
   @media(max-width:880px){
-    nav.links, .nav-cta{display:none;}
+    nav.links, .nav-actions{display:none;}
     .burger{display:block;}
     nav.links.open{
       display:flex;flex-direction:column;
@@ -610,6 +706,9 @@
       padding:24px 32px;gap:20px;
       border-top:1px solid rgba(240,180,0,.18);
     }
+    .wa-float{display:none;}
+    .mobile-cta{display:block;}
+    body{padding-bottom:58px;}
   }
 
   ::selection{background:var(--gold);color:var(--carbon);}
@@ -627,9 +726,15 @@
       <a href="#servicios">Servicios</a>
       <a href="#nosotros">Nosotros</a>
       <a href="#proyectos">Proyectos</a>
+      <a href="#faq">FAQ</a>
       <a href="#contacto">Contacto</a>
     </nav>
-    <a href="tel:+34616618464" class="nav-cta">616 61 84 64</a>
+    <div class="nav-actions">
+      <a href="https://wa.me/34616618464?text=Hola%2C%20me%20gustar%C3%ADa%20pedir%20presupuesto%20para%20un%20trabajo%20de%20carpinter%C3%ADa%20met%C3%A1lica" target="_blank" rel="noopener" class="nav-wa" aria-label="Escribir por WhatsApp">
+        <svg viewBox="0 0 32 32"><path d="M16.04 2.67C8.7 2.67 2.73 8.64 2.73 16c0 2.45.65 4.74 1.78 6.72L2.6 29.33l6.78-1.86A13.27 13.27 0 0 0 16.04 29.33c7.34 0 13.31-5.97 13.31-13.33S23.38 2.67 16.04 2.67zm0 24.13c-2.2 0-4.27-.6-6.04-1.65l-.43-.26-4.02 1.1 1.07-3.92-.28-.44a10.9 10.9 0 0 1-1.7-5.63c0-6.04 4.93-10.97 10.99-10.97 6.06 0 10.99 4.93 10.99 10.97 0 6.05-4.93 10.8-10.58 10.8zm6.03-8.2c-.33-.17-1.95-.96-2.25-1.07-.3-.11-.52-.17-.74.17-.22.33-.85 1.07-1.04 1.29-.19.22-.38.25-.71.08-.33-.17-1.39-.51-2.65-1.63-.98-.87-1.64-1.95-1.83-2.28-.19-.33-.02-.5.15-.67.15-.15.33-.39.5-.58.17-.2.22-.33.33-.55.11-.22.06-.42-.03-.58-.08-.17-.74-1.78-1.01-2.44-.27-.64-.54-.55-.74-.56h-.63c-.22 0-.58.08-.88.42-.3.33-1.15 1.12-1.15 2.74 0 1.62 1.18 3.18 1.34 3.4.17.22 2.32 3.55 5.62 4.98.79.34 1.4.55 1.88.7.79.25 1.5.21 2.07.13.63-.09 1.95-.8 2.23-1.57.27-.77.27-1.43.19-1.57-.08-.14-.3-.22-.63-.39z"/></svg>
+      </a>
+      <a href="tel:+34616618464" class="nav-cta">616 61 84 64</a>
+    </div>
     <button class="burger" id="burgerBtn" aria-label="Abrir menú">☰</button>
   </div>
 </header>
@@ -663,8 +768,8 @@
       <p>En Carpintería y Estructuras Metálicas Ruiz diseñamos, fabricamos e instalamos cada pieza a medida: desde una barandilla sencilla hasta una estructura completa de cubierta. Cada proyecto sale de nuestro taller en Álora y se monta con la misma atención al detalle, ya sea para una vivienda particular, una comunidad o una administración.</p>
       <p>No vendemos catálogo: dibujamos, calculamos y forjamos la solución que encaja en tu espacio, con los materiales y el acabado que el trabajo necesita.</p>
       <div class="stat-row">
-        <div class="stat"><div class="n">100%</div><div class="l">Fabricación a medida</div></div>
-        <div class="stat"><div class="n">3</div><div class="l">Líneas de trabajo principales</div></div>
+        <div class="stat"><div class="n count-up" data-target="100" data-suffix="%">0%</div><div class="l">Fabricación a medida</div></div>
+        <div class="stat"><div class="n count-up" data-target="3">0</div><div class="l">Líneas de trabajo principales</div></div>
         <div class="stat"><div class="n">Málaga</div><div class="l">Provincia y alrededores</div></div>
       </div>
     </div>
@@ -816,6 +921,43 @@
   </div>
 </section>
 
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="section-head reveal" style="margin-bottom:36px;">
+      <div>
+        <span class="eyebrow">Antes de escribirnos</span>
+        <h2>Preguntas frecuentes</h2>
+      </div>
+    </div>
+    <div class="faq-list reveal">
+      <details class="faq-item">
+        <summary>¿El presupuesto tiene algún coste?</summary>
+        <p>No. Valoramos tu proyecto y te damos un presupuesto cerrado sin compromiso, antes de empezar a fabricar nada.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Trabajáis solo en Álora o también en el resto de Málaga?</summary>
+        <p>Nuestro taller está en Álora, pero trabajamos en toda la provincia de Málaga: nos desplazamos para medir y también para instalar.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Hacéis piezas a medida o solo modelos de catálogo?</summary>
+        <p>Todo lo que fabricamos es a medida. No vendemos catálogo: diseñamos y calculamos cada pieza para el espacio y el uso concreto que nos cuentes.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Cuánto tarda un proyecto en estar listo?</summary>
+        <p>Depende de la complejidad de la pieza y de la carga de trabajo del taller en ese momento. Te damos un plazo concreto junto con el presupuesto, antes de que decidas.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Qué materiales y acabados usáis?</summary>
+        <p>Trabajamos principalmente hierro y acero, con acabados en galvanizado, pintado o combinaciones con madera, según lo que necesite cada proyecto.</p>
+      </details>
+      <details class="faq-item">
+        <summary>¿Cómo os puedo contactar?</summary>
+        <p>Por teléfono o WhatsApp al 616 61 84 64, por email a cmfranruiz@gmail.com, o rellenando el formulario de contacto aquí abajo.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
 <section class="contact" id="contacto">
   <div class="wrap reveal">
     <span class="eyebrow">Contacto</span>
@@ -910,6 +1052,7 @@
         <a href="#servicios">Servicios</a>
         <a href="#nosotros">Nosotros</a>
         <a href="#proyectos">Proyectos</a>
+        <a href="#faq">FAQ</a>
         <a href="#contacto">Contacto</a>
         <a href="https://instagram.com/c.e.metalicasruiz" target="_blank" rel="noopener">Instagram</a>
       </nav>
@@ -929,6 +1072,19 @@
 <a class="wa-float" href="https://wa.me/34616618464?text=Hola%2C%20me%20gustar%C3%ADa%20pedir%20presupuesto%20para%20un%20trabajo%20de%20carpinter%C3%ADa%20met%C3%A1lica" target="_blank" rel="noopener" aria-label="Escribir por WhatsApp">
   <svg viewBox="0 0 32 32"><path d="M16.04 2.67C8.7 2.67 2.73 8.64 2.73 16c0 2.45.65 4.74 1.78 6.72L2.6 29.33l6.78-1.86A13.27 13.27 0 0 0 16.04 29.33c7.34 0 13.31-5.97 13.31-13.33S23.38 2.67 16.04 2.67zm0 24.13c-2.2 0-4.27-.6-6.04-1.65l-.43-.26-4.02 1.1 1.07-3.92-.28-.44a10.9 10.9 0 0 1-1.7-5.63c0-6.04 4.93-10.97 10.99-10.97 6.06 0 10.99 4.93 10.99 10.97 0 6.05-4.93 10.8-10.58 10.8zm6.03-8.2c-.33-.17-1.95-.96-2.25-1.07-.3-.11-.52-.17-.74.17-.22.33-.85 1.07-1.04 1.29-.19.22-.38.25-.71.08-.33-.17-1.39-.51-2.65-1.63-.98-.87-1.64-1.95-1.83-2.28-.19-.33-.02-.5.15-.67.15-.15.33-.39.5-.58.17-.2.22-.33.33-.55.11-.22.06-.42-.03-.58-.08-.17-.74-1.78-1.01-2.44-.27-.64-.54-.55-.74-.56h-.63c-.22 0-.58.08-.88.42-.3.33-1.15 1.12-1.15 2.74 0 1.62 1.18 3.18 1.34 3.4.17.22 2.32 3.55 5.62 4.98.79.34 1.4.55 1.88.7.79.25 1.5.21 2.07.13.63-.09 1.95-.8 2.23-1.57.27-.77.27-1.43.19-1.57-.08-.14-.3-.22-.63-.39z"/></svg>
 </a>
+
+<div class="mobile-cta">
+  <div class="row">
+    <a href="tel:+34616618464" class="call">
+      <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.5.6.6 0 1.1.5 1.1 1.1V20c0 .6-.5 1.1-1.1 1.1C10.5 21.1 2.9 13.5 2.9 4.1 2.9 3.5 3.4 3 4 3h3.3c.6 0 1.1.5 1.1 1.1 0 1.2.2 2.4.6 3.5.1.3 0 .7-.2 1L6.6 10.8z"/></svg>
+      Llamar
+    </a>
+    <a href="https://wa.me/34616618464?text=Hola%2C%20me%20gustar%C3%ADa%20pedir%20presupuesto%20para%20un%20trabajo%20de%20carpinter%C3%ADa%20met%C3%A1lica" target="_blank" rel="noopener" class="wa">
+      <svg viewBox="0 0 32 32"><path d="M16.04 2.67C8.7 2.67 2.73 8.64 2.73 16c0 2.45.65 4.74 1.78 6.72L2.6 29.33l6.78-1.86A13.27 13.27 0 0 0 16.04 29.33c7.34 0 13.31-5.97 13.31-13.33S23.38 2.67 16.04 2.67zm0 24.13c-2.2 0-4.27-.6-6.04-1.65l-.43-.26-4.02 1.1 1.07-3.92-.28-.44a10.9 10.9 0 0 1-1.7-5.63c0-6.04 4.93-10.97 10.99-10.97 6.06 0 10.99 4.93 10.99 10.97 0 6.05-4.93 10.8-10.58 10.8zm6.03-8.2c-.33-.17-1.95-.96-2.25-1.07-.3-.11-.52-.17-.74.17-.22.33-.85 1.07-1.04 1.29-.19.22-.38.25-.71.08-.33-.17-1.39-.51-2.65-1.63-.98-.87-1.64-1.95-1.83-2.28-.19-.33-.02-.5.15-.67.15-.15.33-.39.5-.58.17-.2.22-.33.33-.55.11-.22.06-.42-.03-.58-.08-.17-.74-1.78-1.01-2.44-.27-.64-.54-.55-.74-.56h-.63c-.22 0-.58.08-.88.42-.3.33-1.15 1.12-1.15 2.74 0 1.62 1.18 3.18 1.34 3.4.17.22 2.32 3.55 5.62 4.98.79.34 1.4.55 1.88.7.79.25 1.5.21 2.07.13.63-.09 1.95-.8 2.23-1.57.27-.77.27-1.43.19-1.57-.08-.14-.3-.22-.63-.39z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+</div>
 
 <script>
   const burger = document.getElementById('burgerBtn');
@@ -995,14 +1151,33 @@
   (function(){
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const els = document.querySelectorAll('.reveal, .reveal-group');
+
+    function runCountUp(container){
+      container.querySelectorAll('.count-up').forEach(el => {
+        const target = parseInt(el.dataset.target, 10);
+        const suffix = el.dataset.suffix || '';
+        if (reduceMotion) { el.textContent = target + suffix; return; }
+        const duration = 1200;
+        const start = performance.now();
+        function tick(now){
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(eased * target) + suffix;
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+
     if (reduceMotion || !('IntersectionObserver' in window)) {
-      els.forEach(el => el.classList.add('is-visible'));
+      els.forEach(el => { el.classList.add('is-visible'); runCountUp(el); });
       return;
     }
     const io = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('is-visible');
+          runCountUp(entry.target);
           io.unobserve(entry.target);
         }
       });
