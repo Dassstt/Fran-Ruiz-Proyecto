@@ -473,6 +473,15 @@
   .c-list .val{font-size:16px;color:var(--bone);margin-top:2px;}
   .c-list a.val:hover{color:var(--gold);}
 
+  .map-embed{
+    margin-top:28px;
+    border:1px solid rgba(240,180,0,.25);
+    filter:grayscale(60%) contrast(1.1) brightness(.9);
+  }
+  .map-embed iframe{
+    width:100%;height:220px;border:0;display:block;
+  }
+
   form{display:flex;flex-direction:column;gap:18px;}
   .frow{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
   @media(max-width:560px){.frow{grid-template-columns:1fr;}}
@@ -505,6 +514,13 @@
   }
   .submit-btn:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(240,180,0,.25);}
   .form-note{font-size:12px;color:#a39d8d;margin-top:-4px;}
+  .consent-row{display:flex;gap:10px;align-items:flex-start;}
+  .consent-row input{width:auto;flex:none;margin-top:3px;accent-color:var(--gold);}
+  .consent-label{
+    font-family:'Archivo',sans-serif;text-transform:none;letter-spacing:0;
+    font-size:13px;color:#c9c3b3;margin:0;display:inline;
+  }
+  .consent-label a{color:var(--gold);}
   .form-status{
     margin-top:6px;
     border:1px solid rgba(240,180,0,.3);
@@ -802,6 +818,15 @@
           <div><div class="lab">Taller</div><span class="val">Calle Juan de la Cierva, 14 — Polígono Industrial, Álora (Málaga)</span></div>
         </li>
       </ul>
+      <div class="map-embed">
+        <iframe
+          src="https://www.google.com/maps?q=Calle+Juan+de+la+Cierva+14,+Pol%C3%ADgono+Industrial,+%C3%81lora,+M%C3%A1laga&output=embed"
+          title="Ubicación del taller Ruiz en Álora, Málaga"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          allowfullscreen>
+        </iframe>
+      </div>
     </div>
 
     <form id="contactForm">
@@ -838,6 +863,10 @@
         <label for="mensaje">Cuéntanos tu proyecto</label>
         <textarea id="mensaje" placeholder="Describe brevemente qué necesitas, medidas aproximadas o cualquier detalle útil…"></textarea>
       </div>
+      <div class="consent-row">
+        <input type="checkbox" id="consent" required>
+        <label for="consent" class="consent-label">He leído y acepto la <a href="privacidad.html">Política de Privacidad</a>.</label>
+      </div>
       <button type="submit" class="submit-btn">Enviar solicitud</button>
       <p class="form-note">Te responderemos por teléfono o email en menos de 24–48h laborables.</p>
       <div id="formStatus" class="form-status" role="status" aria-live="polite" hidden></div>
@@ -863,6 +892,11 @@
     </div>
     <div class="foot-bottom">
       <span>© 2026 Carpintería y Estructuras Metálicas Ruiz · Calle Juan de la Cierva 14, Pol. Industrial, Álora (Málaga)</span>
+      <span class="foot-legal">
+        <a href="aviso-legal.html">Aviso legal</a> ·
+        <a href="privacidad.html">Privacidad</a> ·
+        <a href="cookies.html">Cookies</a>
+      </span>
       <a href="#top">Volver arriba ↑</a>
     </div>
   </div>
@@ -882,33 +916,56 @@
     a.addEventListener('click', ()=>navLinks.classList.remove('open'));
   });
 
-  document.getElementById('contactForm').addEventListener('submit', function(e){
+  document.getElementById('contactForm').addEventListener('submit', async function(e){
     e.preventDefault();
     const nombre = document.getElementById('nombre').value || 'Cliente';
     const tipo = document.getElementById('tipo').value;
     const mensaje = document.getElementById('mensaje').value;
     const tel = document.getElementById('telefono').value;
+    const email = document.getElementById('email').value;
+    const poblacion = document.getElementById('poblacion').value;
     const body = `Hola, soy ${nombre} (tel. ${tel}). Necesito presupuesto para: ${tipo}. ${mensaje}`;
-
-    window.location.href = `mailto:cmfranruiz@gmail.com?subject=Solicitud%20de%20presupuesto%20-%20Web&body=${encodeURIComponent(body)}`;
-
     const waLink = `https://wa.me/34616618464?text=${encodeURIComponent(body)}`;
     const status = document.getElementById('formStatus');
-    status.hidden = false;
-    status.innerHTML = `
-      <p>Hemos abierto tu cliente de correo con la solicitud. Si no se ha abierto nada, escríbenos directamente:</p>
-      <div class="fs-actions">
-        <a href="${waLink}" target="_blank" rel="noopener">Enviar por WhatsApp</a>
-        <button type="button" id="copyMsgBtn">Copiar mensaje</button>
-        <a href="tel:+34616618464">Llamar: 616 61 84 64</a>
-      </div>
-    `;
-    document.getElementById('copyMsgBtn').addEventListener('click', function(){
-      navigator.clipboard.writeText(body).then(()=>{
-        this.textContent = 'Copiado ✓';
-        setTimeout(()=>{ this.textContent = 'Copiar mensaje'; }, 2000);
+    const submitBtn = this.querySelector('.submit-btn');
+
+    function showFallback(introText){
+      status.hidden = false;
+      status.innerHTML = `
+        <p>${introText}</p>
+        <div class="fs-actions">
+          <a href="${waLink}" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+          <button type="button" id="copyMsgBtn">Copiar mensaje</button>
+          <a href="tel:+34616618464">Llamar: 616 61 84 64</a>
+        </div>
+      `;
+      document.getElementById('copyMsgBtn').addEventListener('click', function(){
+        navigator.clipboard.writeText(body).then(()=>{
+          this.textContent = 'Copiado ✓';
+          setTimeout(()=>{ this.textContent = 'Copiar mensaje'; }, 2000);
+        });
       });
-    });
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
+
+    try {
+      const res = await fetch('/api/contacto', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre, telefono: tel, email, poblacion, tipo, mensaje })
+      });
+      if (!res.ok) throw new Error('request failed');
+      status.hidden = false;
+      status.innerHTML = `<p>Solicitud enviada correctamente. Te responderemos por teléfono o email en menos de 24–48h laborables.</p>`;
+      this.reset();
+    } catch (err) {
+      showFallback('No hemos podido enviar el formulario automáticamente. Escríbenos directamente:');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Enviar solicitud';
+    }
   });
 </script>
 
